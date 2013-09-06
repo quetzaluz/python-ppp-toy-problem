@@ -19,27 +19,25 @@ def anagramsForChunk(string, index, ret):
 			temp = string[index1]
 			string[index1] = string[index2]
 			string[index2] = temp
-		return string
+		return ''.join(string)
 	def checkDuplicates(array):
-		# Subroutine for selecting only unique anagram values
-		res = []
-		seen = {}
-		for i in range(0, len(array)): # i=0; i < len(array); i++:
-			temp_key = array[i][0];
-			print temp_key
-			if hasattr(seen, temp_key):
-			# if not seen[array[i]]:
-				print "MATCH"
-				seen.temp_key = True
-				res.push(temp_key)
-		return res
+		seen = set()
+		result = []
+		for word in array:
+			if word not in seen: 
+				seen.add(word)
+				result.append(word)
+		return result
 	if isinstance(string, str):
-		string = string.split()
-	if index >= len(string):
+		string_letters = list(string)
+	else:
+		string_letters = string
+	if index >= len(string_letters):
 		return ret
-	for i in range(index, len(string)): # = index; i < len(string); i++:
-		ret.append(placeLetters(string, index, i))
-	return checkDuplicates(anagramsForChunk(string, index+1, ret))
+	for i in range(index, len(string_letters)): # = index; i < len(string); i++:
+		ret.append(placeLetters(string_letters, index, i))
+	anagramsForChunk(string_letters, index+1, ret)
+	return checkDuplicates(ret)
 
 def findDictionaryMatch(shuffled_testing_chunk):
 	for line in f:
@@ -48,6 +46,5 @@ def findDictionaryMatch(shuffled_testing_chunk):
 		else:
 			return False
 
-test =  anagramsForChunk("cat", 0, [])
-print test
+print anagramsForChunk("cat", 0, [])
 # findDictionaryMatch("aardvark")
