@@ -39,12 +39,12 @@ def anagramsForChunk(string, index, ret):
 	anagramsForChunk(string_letters, index+1, ret)
 	return checkDuplicates(ret)
 
-def findDictionaryMatch(shuffled_testing_chunk):
+def findDictionaryMatch(word):
+	found = None
 	for line in f:
-		if shuffled_testing_chunk == line.strip('\r\n'):
+		if word == line.strip('\r\n'):
 			return line.strip('\r\n')
-		else:
-			return False
+	return False;
 
 print anagramsForChunk("cat", 0, [])
 # findDictionaryMatch("aardvark")
