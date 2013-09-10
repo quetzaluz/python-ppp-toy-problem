@@ -1,8 +1,6 @@
 f = open('mowords.txt', 'r')
 max_word_length = 28
 test_string = "etaelehoyrnrsweeneiornvtsdelreiolrertsrhotruongpmghwsihlxtdeelaneeetldosheeralithtndareluttelderrocltaeiwrtodeoeyladfswpsremeucraddfvrntaiansudynaeytnaidthioicheegblyoeielsvvneoliiwudveieuaoaodptetpurrdeieecnohasapiwdoehltflsbohlamthioeosistssbstwe"
-testing_chunk = ""
-last_index = 0
 
 def getTextChunk(string, start_index=0, end_index=2):
 	# May want to refactor this to be a subroutine within a function that can be recursively called.
@@ -38,44 +36,42 @@ def anagramsForChunk(string, index=0, ret=[]):
 	return checkDuplicates(ret)
 
 def findDictionaryMatch(word):
-	found = None
+	found = False
 	for line in f:
 		if word == line.strip('\r\n'):
-			return line.strip('\r\n')
-	return False;
+			found = line.strip('\r\n')
+	f.seek(0);
+	return found;
 
 def parseScrambledText(test_string):
 	start_index = 0
 	end_index = 2
 	last_index = len(test_string) - 1
-	while end_index <= last_index:
+	while end_index <= max_word_length:
 		chunk = getTextChunk(test_string, start_index, end_index)
 		anagrams = anagramsForChunk(chunk)
 		word_found = False
+		word_found_length = 0
 		for word in anagrams:
-			print word
 			dictionary_match = findDictionaryMatch(word)
 			if dictionary_match:
 				print "Match!"
 				print word, dictionary_match
-				word_found = True
-				# I have been working mostly in Javascript, so assigning string values below has been tricky for me.
-				# test_string[start_index:end_index] = findDictionaryMatch(word)
-				# line = line[:10].replace(';', ':') + line[10:]
-				# test_string.replace(chunk, dictionary_match) # This will replace all instances, but in this problem this is not problematic.
-				new_string = test_string[:start_index] + dictionary_match + test_string[end_index:]
-				test_string = new_string
-				start_index = end_index + 1
-				end_index = start_index + 2
+				word_found = dictionary_match
+				word_found_end_index = end_index
 				break
-		if word_found is False and end_index == max_word_length:
-			char_at_start = test_string[start_index]
-			new_string = test_string[:start_index].replace(char_at_start, '-') + test_string[start_index:]
-			test_string = new_string
-			start_index += 1
-			end_index = start_index + 2
-		if word_found is False and end_index != max_word_length:
-			end_index += 1
+		end_index += 1
+	if word_found is False and end_index == max_word_length:
+		new_string = test_string[:start_index] + '-' + test_string[start_index:]
+		test_string = new_string
+		start_index += 1
+		end_index = start_index + 2
+	elif word_found is not False:
+		new_string = test_string[:start_index] + dictionary_match + test_string[word_found_end_index:]
+		test_string = new_string
+		start_index = end_index + 1
+		end_index = start_index + 2
 	print test_string
 
 parseScrambledText(test_string)
+# findDictionaryMatch("tea")
