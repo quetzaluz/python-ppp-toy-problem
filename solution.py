@@ -49,14 +49,12 @@ def parseScrambledText(test_string):
 	last_index = len(test_string) - 1
 	while end_index <= max_word_length:
 		chunk = getTextChunk(test_string, start_index, end_index)
-		anagrams = anagramsForChunk(chunk)
+		anagrams = anagramsForChunk(chunk, 0 , [])
 		word_found = False
 		word_found_length = 0
 		for word in anagrams:
 			dictionary_match = findDictionaryMatch(word)
 			if dictionary_match:
-				print "Match!"
-				print word, dictionary_match
 				word_found = dictionary_match
 				word_found_end_index = end_index
 				break
