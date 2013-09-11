@@ -50,7 +50,7 @@ def parseScrambledText(test_string):
 	while end_index <= last_index:
 		word_found = False
 		word_found_length = 0
-		while end_index <= start_index + max_word_length:
+		while end_index <= min((start_index + max_word_length), last_index):
 			chunk = getTextChunk(test_string, start_index, end_index)
 			anagrams = anagramsForChunk(chunk, 0 , [])
 			for word in anagrams:
