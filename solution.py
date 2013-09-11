@@ -47,29 +47,34 @@ def parseScrambledText(test_string):
 	start_index = 0
 	end_index = 2
 	last_index = len(test_string) - 1
-	while end_index <= max_word_length:
-		chunk = getTextChunk(test_string, start_index, end_index)
-		anagrams = anagramsForChunk(chunk, 0 , [])
+	while end_index <= last_index:
 		word_found = False
 		word_found_length = 0
-		for word in anagrams:
-			dictionary_match = findDictionaryMatch(word)
-			if dictionary_match:
-				word_found = dictionary_match
-				word_found_end_index = end_index
-				break
-		end_index += 1
-	if word_found is False and end_index == max_word_length:
-		new_string = test_string[:start_index] + '-' + test_string[start_index:]
-		test_string = new_string
-		start_index += 1
-		end_index = start_index + 2
-	elif word_found is not False:
-		new_string = test_string[:start_index] + dictionary_match + test_string[word_found_end_index:]
-		test_string = new_string
-		start_index = end_index + 1
-		end_index = start_index + 2
+		while end_index <= start_index + max_word_length:
+			chunk = getTextChunk(test_string, start_index, end_index)
+			anagrams = anagramsForChunk(chunk, 0 , [])
+			for word in anagrams:
+				dictionary_match = findDictionaryMatch(word)
+				if dictionary_match:
+					print "Matched: " + dictionary_match
+					word_found = dictionary_match
+					word_found_end_index = end_index
+					break
+			end_index += 1
+		if word_found is False:
+			print "No word found for iteration, incrementing index..."
+			new_string = test_string[:start_index] + '-' + test_string[start_index:]
+			test_string = new_string
+			start_index += 1
+			end_index = start_index + 1
+		else:
+			print "Word " + word_found + " found, incrementing..."
+			new_string = test_string[:start_index] + word_found + test_string[word_found_end_index:]
+			test_string = new_string
+			start_index = word_found_end_index
+			print end_index
+			end_index = start_index + 1
+			print end_index
 	print test_string
 
 parseScrambledText(test_string)
-# findDictionaryMatch("tea")
