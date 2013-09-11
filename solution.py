@@ -36,6 +36,7 @@ def anagramsForChunk(string, index=0, ret=[]):
 	return checkDuplicates(ret)
 
 def findDictionaryMatch(word):
+	# Iterate through dictionary and see if input word matches a dictionary word.
 	found = False
 	for line in f:
 		if word == line.strip('\r\n'):
@@ -44,6 +45,7 @@ def findDictionaryMatch(word):
 	return found;
 
 def parseScrambledText(test_string):
+	# Primary function that unscrambles testing string, calls helper functions.
 	start_index = 0
 	end_index = 2
 	last_index = len(test_string) - 1
@@ -62,19 +64,16 @@ def parseScrambledText(test_string):
 					break
 			end_index += 1
 		if word_found is False:
-			print "No word found for iteration, incrementing index..."
-			new_string = test_string[:start_index] + '-' + test_string[start_index:]
+			new_string = test_string[:start_index] + '-' + test_string[start_index+1:]
 			test_string = new_string
 			start_index += 1
 			end_index = start_index + 1
 		else:
 			print "Word " + word_found + " found, incrementing..."
-			new_string = test_string[:start_index] + word_found + test_string[word_found_end_index:]
+			new_string = test_string[:start_index] + word_found.capitalize() + test_string[word_found_end_index:]
 			test_string = new_string
 			start_index = word_found_end_index
-			print end_index
 			end_index = start_index + 1
-			print end_index
 	print test_string
 
 parseScrambledText(test_string)
